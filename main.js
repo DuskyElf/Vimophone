@@ -48,16 +48,22 @@ class Note {
     this.oscillator.type = "sine";
     this.oscillator.start(timeStamp);
     this.oscillator.frequency.setValueAtTime(getFreq(noteName), timeStamp);
+
+    /**@type {GainNode} */
+    this.gainNode = audioCtx.createGain();
+    this.gainNode.gain.setValueAtTime(0, timeStamp);
+    this.oscillator.connect(this.gainNode);
+    this.gainNode.connect(this.audioCtx.destination);
   }
 
   /** Hit the Note so that it makes some sound */
   hit() {
-    this.oscillator.connect(this.audioCtx.destination);
+    this.gainNode.gain.setTargetAtTime(0.8, this.audioCtx.currentTime, 0.1)
   }
 
   /** The hitting action is completed, stop playing the sound */
   unhit() {
-    this.oscillator.disconnect(this.audioCtx.destination);
+    this.gainNode.gain.setTargetAtTime(0, this.audioCtx.currentTime, 0.1)
   }
 }
 
