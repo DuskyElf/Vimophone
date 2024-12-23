@@ -1,69 +1,74 @@
 /**
 * @typedef {typeof NOTE_NAMES[number]} NoteName
 * @type {["a", "b", "c", "d", "e", "f", "g"]} 
-*/ const NOTE_NAMES = ["a", "b", "c", "d", "e", "f", "g"];
+*/const NOTE_NAMES = ["a", "b", "c", "d", "e", "f", "g"];
+
+const A4 = 440;
+const NOTE_RATIO = Math.pow(2, 1/12);
+const ATTACK_TIME = 0.1;
+const RELEASE_TIME = 0.1;
 
 /**
 * @param {any} x
 * @returns {x is NoteName}
-*/ const isNote = (x) => NOTE_NAMES.includes(x);
+*/const isNote = (x) => NOTE_NAMES.includes(x);
 
 /**
 * @param {NoteName} noteName 
 * @returns {number}
 */
 function getFreq(noteName) {
-  const A4 = 440;
-  const PART = Math.pow(2, 1/12);
   switch (noteName) {
     case "a":
-      return A4 * Math.pow(PART, 0);
+      return A4 * Math.pow(NOTE_RATIO, 0);
     case "b":
-      return A4 * Math.pow(PART, 2);
+      return A4 * Math.pow(NOTE_RATIO, 2);
     case "c":
-      return A4 * Math.pow(PART, -9);
+      return A4 * Math.pow(NOTE_RATIO, -9);
     case "d":
-      return A4 * Math.pow(PART, -7);
+      return A4 * Math.pow(NOTE_RATIO, -7);
     case "e":
-      return A4 * Math.pow(PART, -5);
+      return A4 * Math.pow(NOTE_RATIO, -5);
     case "f":
-      return A4 * Math.pow(PART, -4);
+      return A4 * Math.pow(NOTE_RATIO, -4);
     case "g":
-      return A4 * Math.pow(PART, -2);
+      return A4 * Math.pow(NOTE_RATIO, -2);
   }
 }
 
 class Note {
   /**
   * @param {AudioContext} audioCtx
-  * @param {NoteName} noteName 
+  * @param {NoteName} noteName
   * @param {number} timeStamp
   */
   constructor(audioCtx, noteName, timeStamp) {
-    /**@type {AudioContext} */
-    this.audioCtx = audioCtx;
+    /**@private @type {AudioContext} */
+    this._audioCtx = audioCtx;
+    /**@private @type {number} */
+    this._freq = getFreq(noteName);
 
-    /**@type {OscillatorNode} */
-    this.oscillator = audioCtx.createOscillator();
-    this.oscillator.type = "sine";
-    this.oscillator.start(timeStamp);
-    this.oscillator.frequency.setValueAtTime(getFreq(noteName), timeStamp);
+    /**@private @type {OscillatorNode} */
+    this._oscillator = audioCtx.createOscillator();
+    this._oscillator.type = "sine";
+    this._oscillator.start(timeStamp);
+    this._oscillator.frequency.setValueAtTime(this._freq, timeStamp);
 
-    /**@type {GainNode} */
-    this.gainNode = audioCtx.createGain();
-    this.gainNode.gain.setValueAtTime(0, timeStamp);
-    this.oscillator.connect(this.gainNode);
-    this.gainNode.connect(this.audioCtx.destination);
+    /**@private @type {GainNode} */
+    this._gainNode = audioCtx.createGain();
+    this._gainNode.gain.setValueAtTime(0, timeStamp);
+    this._oscillator.connect(this._gainNode);
+    this._gainNode.connect(this._audioCtx.destination);
   }
 
   /** Hit the Note so that it makes some sound */
   hit() {
-    this.gainNode.gain.setTargetAtTime(0.8, this.audioCtx.currentTime, 0.1)
+    this._gainNode.gain.setTargetAtTime(0.8, this._audioCtx.currentTime, ATTACK_TIME)
   }
 
   /** The hitting action is completed, stop playing the sound */
   unhit() {
-    this.gainNode.gain.setTargetAtTime(0, this.audioCtx.currentTime, 0.1)
+    this._gainNode.gain.setTargetAtTime(0, this._audioCtx.currentTime, RELEASE_TIME)
   }
 }
 
