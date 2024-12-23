@@ -10,7 +10,7 @@
 
 /**
 * @param {NoteName} noteName 
-* @returns number
+* @returns {number}
 */
 function getFreq(noteName) {
   const A4 = 440;
