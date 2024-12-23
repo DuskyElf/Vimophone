@@ -70,6 +70,11 @@ class Note {
   unhit() {
     this._gainNode.gain.setTargetAtTime(0, this._audioCtx.currentTime, RELEASE_TIME)
   }
+
+  set_octave(/**@type {number} */value) {
+    this._oscillator.frequency.exponentialRampToValueAtTime(
+      this._freq * Math.pow(2, value), this._audioCtx.currentTime + ATTACK_TIME);
+  }
 }
 
 function main() {
@@ -82,13 +87,17 @@ function main() {
   const noteFromName = noteName => notes[NOTE_NAMES.indexOf(noteName)];
 
   document.addEventListener("keydown", (ev) => {
-    if (isNote(ev.key)) {
+    if (ev.key === "k") {
+      notes.forEach(note => note.set_octave(1))
+    } else if (isNote(ev.key)) {
       noteFromName(ev.key).hit();
     }
   });
 
   document.addEventListener("keyup", (ev) => {
-    if (isNote(ev.key)) {
+    if (ev.key === "k") {
+      notes.forEach(note => note.set_octave(0))
+    } if (isNote(ev.key)) {
       noteFromName(ev.key).unhit();
     }
   });
