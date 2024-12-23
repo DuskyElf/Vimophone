@@ -1,21 +1,21 @@
 /**
-* @typedef {typeof NOTES[number]} Note
-*/
-const /**@type {["a", "b", "c", "d", "e", "f", "g"]}*/ NOTES = ["a", "b", "c", "d", "e", "f", "g"];
+* @typedef {typeof NOTE_NAMES[number]} NoteName
+* @type {["a", "b", "c", "d", "e", "f", "g"]} 
+*/ const NOTE_NAMES = ["a", "b", "c", "d", "e", "f", "g"];
 
 /**
 * @param {any} x
-* @returns {x is Note}
-*/
-const isNote = (x) => NOTES.includes(x);
+* @returns {x is NoteName}
+*/ const isNote = (x) => NOTE_NAMES.includes(x);
 
 /**
-* @param {Note} note 
+* @param {NoteName} noteName 
+* @returns number
 */
-function getNote(note) {
+function getFreq(noteName) {
   const A4 = 440;
   const PART = Math.pow(2, 1/12);
-  switch (note) {
+  switch (noteName) {
     case "a":
       return A4 * Math.pow(PART, 0);
     case "b":
@@ -33,34 +33,59 @@ function getNote(note) {
   }
 }
 
-let /**@type {AudioContext | undefined}*/ audioCtx;
-let /**@type {Object.<Note, OscillatorNode>}*/ oscillators = {};
-document.addEventListener("click", () => {
-  if (audioCtx) return;
+class Note {
+  /**
+  * @param {AudioContext} audioCtx
+  * @param {NoteName} noteName 
+  * @param {number} timeStamp
+  */
+  constructor(audioCtx, noteName, timeStamp) {
+    /**@type {AudioContext} */
+    this.audioCtx = audioCtx;
 
-  audioCtx = new AudioContext();
+    /**@type {OscillatorNode} */
+    this.oscillator = audioCtx.createOscillator();
+    this.oscillator.type = "sine";
+    this.oscillator.start(timeStamp);
+    this.oscillator.frequency.setValueAtTime(getFreq(noteName), timeStamp);
+  }
+
+  /** Hit the Note so that it makes some sound */
+  hit() {
+    this.oscillator.connect(this.audioCtx.destination);
+  }
+
+  /** The hitting action is completed, stop playing the sound */
+  unhit() {
+    this.oscillator.disconnect(this.audioCtx.destination);
+  }
+}
+
+function main() {
+  const audioCtx = new AudioContext();
   const timeStamp = audioCtx.currentTime + 0.01;
-  for (const note of NOTES) {
-    const oscillator = audioCtx.createOscillator();
-    oscillator.type = "sine";
-    oscillator.start(timeStamp);
-    oscillator.frequency.setValueAtTime(getNote(note), timeStamp);
-    oscillators[note] = oscillator;
-  }
-});
+  const notes = NOTE_NAMES
+    .map(noteName => new Note(audioCtx, noteName, timeStamp))
 
-document.addEventListener("keydown", (ev) => {
-  if (!audioCtx) return;
+  /** @param {NoteName} noteName */
+  const noteFromName = noteName => notes[NOTE_NAMES.indexOf(noteName)];
 
-  if (isNote(ev.key)) {
-    oscillators[ev.key].connect(audioCtx.destination);
-  }
-});
+  document.addEventListener("keydown", (ev) => {
+    if (isNote(ev.key)) {
+      noteFromName(ev.key).hit();
+    }
+  });
 
-document.addEventListener("keyup", (ev) => {
-  if (!audioCtx) return;
+  document.addEventListener("keyup", (ev) => {
+    if (isNote(ev.key)) {
+      noteFromName(ev.key).unhit();
+    }
+  });
+}
 
-  if (isNote(ev.key)) {
-    oscillators[ev.key].disconnect(audioCtx.destination);
-  }
+let started = false;
+document.addEventListener("click", () => {
+  if (started) return;
+  main();
+  started = true;
 });
