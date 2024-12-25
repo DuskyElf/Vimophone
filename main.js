@@ -62,12 +62,16 @@ class Note {
   }
 
   /** Hit the Note so that it makes some sound
-  * @typedef {{ octave: number }} Modifiers
+  * @typedef {{ octave: number, transpose: number }} Modifiers
   * @param {Modifiers} modifiers 
   */
   hit(modifiers) {
+    const factor = 1
+      * Math.pow(2, modifiers.octave)
+      * Math.pow(NOTE_RATIO, modifiers.transpose);
+
     this._oscillator.frequency.setValueAtTime(
-      this._freq * Math.pow(2, modifiers.octave), this._audioCtx.currentTime);
+      this._freq * factor, this._audioCtx.currentTime);
 
     this._gainNode.gain.setTargetAtTime(0.8, this._audioCtx.currentTime, ATTACK_TIME)
   }
@@ -89,17 +93,22 @@ function main() {
 
   const /**@type {Modifiers}*/ modifiers = {
     octave: 0,
+    transpose: 0,
   };
 
   document.addEventListener("keydown", (ev) => {
     if (ev.repeat) return;
 
     if (ev.key === "k") {
-      modifiers.octave = 1;
-    } else if (ev.key === "i") {
       modifiers.octave = -1;
+    } else if (ev.key === "i") {
+      modifiers.octave = 1;
     } else if (ev.key === ",") {
       modifiers.octave = 2;
+    } else if (ev.key === "j") {
+      modifiers.transpose = -1;
+    } else if (ev.key === "u") {
+      modifiers.transpose = 1;
     } else if (isNote(ev.key)) {
       noteFromName(ev.key).hit(modifiers);
     }
@@ -108,6 +117,8 @@ function main() {
   document.addEventListener("keyup", (ev) => {
     if ("ki,".includes(ev.key)) {
       modifiers.octave = 0;
+    } else if ("ju".includes(ev.key)) {
+      modifiers.transpose = 0;
     } else if (isNote(ev.key)) {
       noteFromName(ev.key).unhit();
     }
