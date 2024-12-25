@@ -61,19 +61,20 @@ class Note {
     this._gainNode.connect(this._audioCtx.destination);
   }
 
-  /** Hit the Note so that it makes some sound */
-  hit() {
+  /** Hit the Note so that it makes some sound
+  * @typedef {{ octave: number }} Modifiers
+  * @param {Modifiers} modifiers 
+  */
+  hit(modifiers) {
+    this._oscillator.frequency.setValueAtTime(
+      this._freq * Math.pow(2, modifiers.octave), this._audioCtx.currentTime);
+
     this._gainNode.gain.setTargetAtTime(0.8, this._audioCtx.currentTime, ATTACK_TIME)
   }
 
   /** The hitting action is completed, stop playing the sound */
   unhit() {
     this._gainNode.gain.setTargetAtTime(0, this._audioCtx.currentTime, RELEASE_TIME)
-  }
-
-  set_octave(/**@type {number} */value) {
-    this._oscillator.frequency.exponentialRampToValueAtTime(
-      this._freq * Math.pow(2, value), this._audioCtx.currentTime + ATTACK_TIME);
   }
 }
 
@@ -86,17 +87,23 @@ function main() {
   /** @param {NoteName} noteName */
   const noteFromName = noteName => notes[NOTE_NAMES.indexOf(noteName)];
 
+  const /**@type {Modifiers}*/ modifiers = {
+    octave: 0,
+  };
+
   document.addEventListener("keydown", (ev) => {
+    if (ev.repeat) return;
+
     if (ev.key === "k") {
-      notes.forEach(note => note.set_octave(1))
+      modifiers.octave = 1;
     } else if (isNote(ev.key)) {
-      noteFromName(ev.key).hit();
+      noteFromName(ev.key).hit(modifiers);
     }
   });
 
   document.addEventListener("keyup", (ev) => {
     if (ev.key === "k") {
-      notes.forEach(note => note.set_octave(0))
+      modifiers.octave = 0;
     } if (isNote(ev.key)) {
       noteFromName(ev.key).unhit();
     }
