@@ -96,15 +96,19 @@ function main() {
 
     if (ev.key === "k") {
       modifiers.octave = 1;
+    } else if (ev.key === "i") {
+      modifiers.octave = -1;
+    } else if (ev.key === ",") {
+      modifiers.octave = 2;
     } else if (isNote(ev.key)) {
       noteFromName(ev.key).hit(modifiers);
     }
   });
 
   document.addEventListener("keyup", (ev) => {
-    if (ev.key === "k") {
+    if ("ki,".includes(ev.key)) {
       modifiers.octave = 0;
-    } if (isNote(ev.key)) {
+    } else if (isNote(ev.key)) {
       noteFromName(ev.key).unhit();
     }
   });
