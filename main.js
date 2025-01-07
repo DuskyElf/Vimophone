@@ -6,6 +6,8 @@
 const A4 = 440;
 const NOTE_RATIO = Math.pow(2, 1/12);
 const ATTACK_TIME = 0.1;
+const DECAY_TIME = 0.5;
+const SUSTAIN_FACTOR = 0.1;
 const RELEASE_TIME = 0.1;
 
 /**
@@ -73,11 +75,13 @@ class Note {
     this._oscillator.frequency.setValueAtTime(
       this._freq * factor, this._audioCtx.currentTime);
 
-    this._gainNode.gain.setTargetAtTime(0.8, this._audioCtx.currentTime, ATTACK_TIME)
+    this._gainNode.gain.setTargetAtTime(0.8, this._audioCtx.currentTime, ATTACK_TIME);
+    this._gainNode.gain.setTargetAtTime(0.8 * SUSTAIN_FACTOR, this._audioCtx.currentTime + ATTACK_TIME, DECAY_TIME);
   }
 
   /** The hitting action is completed, stop playing the sound */
   unhit() {
+    this._gainNode.gain.cancelScheduledValues(this._audioCtx.currentTime);
     this._gainNode.gain.setTargetAtTime(0, this._audioCtx.currentTime, RELEASE_TIME)
   }
 }
