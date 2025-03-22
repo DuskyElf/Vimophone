@@ -52,7 +52,10 @@ class Note {
 
     /**@private @type {OscillatorNode} */
     this._oscillator = audioCtx.createOscillator();
-    this._oscillator.type = "sine";
+
+    const wave = audioCtx.createPeriodicWave([1, 0.9, 0.5, 0.5, 0.5, 0.5], [1, 1, 1, 1, 1, 1]);
+    this._oscillator.setPeriodicWave(wave);
+
     this._oscillator.start(timeStamp);
     this._oscillator.frequency.setValueAtTime(this._freq, timeStamp);
 
