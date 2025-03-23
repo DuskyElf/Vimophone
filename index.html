@@ -3,37 +3,70 @@
 
 <HEAD>
   <title>Vimophone</title>
+  <script defer src="./main.js"></script>
+  <script type="module" defer src="alpha-keyboard.js"></script>
 </HEAD>
 
 <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
   body {
-    font-size: 2em;
+    display: flex;
+    padding-top: 10%;
+    justify-content: center;
+  }
+
+  alpha-keyboard [key] {
+    text-align: center;
+    align-content: center;
+  }
+
+  alpha-keyboard [key]:hover {
+    background-color: #f0f0f0;
   }
 </style>
 
 <BODY>
-  <code>
-    <b>Press anywhere on the screen to start!</b>
-    <p>
-      Keys <b>C D E F G A B</b> represent their respective notes
-    </p>
+  <alpha-keyboard>
+    <div key="c" slot="c">C</div>
+    <div key="d" slot="d">D</div>
+    <div key="e" slot="e">E</div>
+    <div key="f" slot="f">F</div>
+    <div key="g" slot="g">G</div>
+    <div key="a" slot="a">A</div>
+    <div key="b" slot="b">B</div>
+    <div key="," slot=",">+24</div>
+    <div key="k" slot="k">-12</div>
+    <div key="i" slot="i">+12</div>
+    <div key="j" slot="j">-1</div>
+    <div key="u" slot="u">+1</div>
+  </alpha-keyboard>
 
-    <p>
-      <b>Modifiers -</b><br>
-      <b>,</b> for +2 Octave<br>
-      <b>K</b> for -1 Octave<br>
-      <b>I</b> for +1 Octave<br>
-      <b>J</b> for -1 transpose (flat)<br>
-      <b>U</b> for +1 transpose (sharp)<br>
-    </p>
+  <!-- <code> -->
+  <!-- <b>Press anywhere on the screen to start!</b> -->
+  <!-- <p> -->
+  <!-- Keys <b>C D E F G A B</b> represent their respective notes -->
+  <!-- </p> -->
 
-    <b>Jingle Bells - </b></br>
-    EEE EEE EGCDE<br>
-    FFF FFEE EEEDDED G<br>
-    EEE EEE EGCDE<br>
-    FFF FFEE EEGGFDC<br>
-  </code>
-  <script src="./main.js"></script>
+  <!-- <p> -->
+  <!-- <b>Modifiers -</b><br> -->
+  <!-- <b>,</b> for +2 Octave<br> -->
+  <!-- <b>K</b> for -1 Octave<br> -->
+  <!-- <b>I</b> for +1 Octave<br> -->
+  <!-- <b>J</b> for -1 transpose (flat)<br> -->
+  <!-- <b>U</b> for +1 transpose (sharp)<br> -->
+  <!-- </p> -->
+
+  <!-- <b>Jingle Bells - </b></br> -->
+  <!-- EEE EEE EGCDE<br> -->
+  <!-- FFF FFEE EEEDDED G<br> -->
+  <!-- EEE EEE EGCDE<br> -->
+  <!-- FFF FFEE EEGGFDC<br> -->
+  <!-- </code> -->
 </BODY>
 
 </HTML>
