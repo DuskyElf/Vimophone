@@ -3,6 +3,7 @@
 
 <HEAD>
   <title>Vimophone</title>
+  <meta charset="utf-8">
   <script defer src="./main.js"></script>
   <script type="module" defer src="./synth.js"></script>
   <script type="module" defer src="alpha-keyboard.js"></script>
@@ -26,6 +27,11 @@
     align-content: center;
   }
 
+  alpha-keyboard [key="u"],
+  alpha-keyboard [key="j"] {
+    font-size: 1.5rem;
+  }
+
   alpha-keyboard [key]:hover {
     background-color: #f0f0f0;
   }
@@ -41,11 +47,11 @@
       <synth-key key="g" slot="g">G</synth-key>
       <synth-key key="a" slot="a">A</synth-key>
       <synth-key key="b" slot="b">B</synth-key>
-      <synth-key key="," slot=",">+24</synth-key>
-      <synth-key key="k" slot="k">-12</synth-key>
-      <synth-key key="i" slot="i">+12</synth-key>
-      <synth-key key="j" slot="j">-1</synth-key>
-      <synth-key key="u" slot="u">+1</synth-key>
+      <synth-key key="," slot=",">+2</synth-key>
+      <synth-key key="k" slot="k">-1</synth-key>
+      <synth-key key="i" slot="i">+1</synth-key>
+      <synth-key key="j" slot="j">♭</synth-key>
+      <synth-key key="u" slot="u">♯</synth-key>
     </alpha-keyboard>
   </synth-init>
 
