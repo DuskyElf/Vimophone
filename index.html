@@ -4,6 +4,7 @@
 <HEAD>
   <title>Vimophone</title>
   <script defer src="./main.js"></script>
+  <script type="module" defer src="./synth.js"></script>
   <script type="module" defer src="alpha-keyboard.js"></script>
 </HEAD>
 
@@ -16,7 +17,7 @@
 
   body {
     display: flex;
-    padding-top: 10%;
+    padding-top: 30vh;
     justify-content: center;
   }
 
@@ -31,20 +32,22 @@
 </style>
 
 <BODY>
-  <alpha-keyboard>
-    <div key="c" slot="c">C</div>
-    <div key="d" slot="d">D</div>
-    <div key="e" slot="e">E</div>
-    <div key="f" slot="f">F</div>
-    <div key="g" slot="g">G</div>
-    <div key="a" slot="a">A</div>
-    <div key="b" slot="b">B</div>
-    <div key="," slot=",">+24</div>
-    <div key="k" slot="k">-12</div>
-    <div key="i" slot="i">+12</div>
-    <div key="j" slot="j">-1</div>
-    <div key="u" slot="u">+1</div>
-  </alpha-keyboard>
+  <synth-init>
+    <alpha-keyboard>
+      <synth-key key="c" slot="c">C</synth-key>
+      <synth-key key="d" slot="d">D</synth-key>
+      <synth-key key="e" slot="e">E</synth-key>
+      <synth-key key="f" slot="f">F</synth-key>
+      <synth-key key="g" slot="g">G</synth-key>
+      <synth-key key="a" slot="a">A</synth-key>
+      <synth-key key="b" slot="b">B</synth-key>
+      <synth-key key="," slot=",">+24</synth-key>
+      <synth-key key="k" slot="k">-12</synth-key>
+      <synth-key key="i" slot="i">+12</synth-key>
+      <synth-key key="j" slot="j">-1</synth-key>
+      <synth-key key="u" slot="u">+1</synth-key>
+    </alpha-keyboard>
+  </synth-init>
 
   <!-- <code> -->
   <!-- <b>Press anywhere on the screen to start!</b> -->

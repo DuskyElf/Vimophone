@@ -13,52 +13,44 @@ customElements.define("alpha-keyboard", class AlphaKeyboard extends HTMLElement 
   * @param {KeyboardEvent} ev
   */
   handleEvent(ev) {
-    if (ev.type == "keydown" || ev.type == "keyup")
-      this[`for${ev.type}`](ev);
-  }
-
-  /**
-  * @param {KeyboardEvent} ev
-  */
-  forkeydown(ev) {
-    if (ev.repeat) return;
-
-    this.querySelector(`[key="${ev.key}"]`)?.setAttribute("pressed", "");
-
-  }
-
-  /**
-  * @param {KeyboardEvent} ev
-  */
-  forkeyup(ev) {
-    if (ev.repeat) return;
-
-    this.querySelector(`[key="${ev.key}"]`)?.removeAttribute("pressed");
+    switch (ev.type) {
+      case "keydown":
+        this.querySelector(`[key="${ev.key}"]`)
+          ?.setAttribute("pressed", "");
+        return;
+      case "keyup":
+        this.querySelector(`[key="${ev.key}"]`)
+          ?.removeAttribute("pressed");
+        return;
+    }
   }
 
   static template = /*html*/`
     <style>
       alpha-keyboard {
-        gap: 2px;
         width: 85%;
         max-width: 600px;
+
         display: flex;
         flex-direction: column;
+        gap: 2px;
       }
 
       alpha-keyboard>[row] {
-        gap: 2px;
         width: 100%;
+
         display: flex;
         flex-direction: row;
+        gap: 2px;
       }
 
       alpha-keyboard [key] {
         flex-grow: 1;
         max-width: 9%;
+        aspect-ratio: 1 / 1;
+
         border-radius: 5px;
         border: 2px solid black;
-        aspect-ratio: 1 / 1;
       }
 
       alpha-keyboard>[row]:nth-of-type(2) {
