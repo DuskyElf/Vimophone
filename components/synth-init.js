@@ -1,7 +1,3 @@
-import * as synth from "../synth.js";
-import { SynthNote } from "./synth-note.js";
-import { SynthModifier } from "./synth-modifier.js";
-
 export class SynthInit extends HTMLElement {
   constructor() {
     super();
@@ -63,7 +59,9 @@ export class SynthInit extends HTMLElement {
     this.audioCtx = null;
     this.modifiers = null;
 
+    /**@import {SynthNote} from "./synth-note.js"*/
     this.synthNotes = /**@type {NodeListOf<SynthNote>}*/(this.querySelectorAll("synth-note"));
+    /**@import {SynthModifier} from "./synth-modifier.js"*/
     this.synthModifiers = /**@type {NodeListOf<SynthModifier>}*/(this.querySelectorAll("synth-modifier"));
   }
 

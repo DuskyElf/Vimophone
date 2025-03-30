@@ -1,4 +1,4 @@
-import { SynthInit } from "./synth-init.js";
+/**@import {SynthInit} from "./synth-init.js"*/
 
 export class SynthModifier extends HTMLElement {
   constructor() {

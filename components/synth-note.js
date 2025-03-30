@@ -1,5 +1,5 @@
 import * as synth from "../synth.js";
-import { SynthInit } from "./synth-init.js";
+/**@import {SynthInit} from "./synth-init.js"*/
 
 export class SynthNote extends HTMLElement {
   constructor() {
