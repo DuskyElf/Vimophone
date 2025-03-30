@@ -4,9 +4,10 @@
 <HEAD>
   <title>Vimophone</title>
   <meta charset="utf-8">
-  <script defer src="./main.js"></script>
-  <script type="module" defer src="./synth.js"></script>
-  <script type="module" defer src="alpha-keyboard.js"></script>
+  <script type="module" defer src="./components/synth-init.js"></script>
+  <script type="module" defer src="./components/synth-note.js"></script>
+  <script type="module" defer src="./components/synth-modifier.js"></script>
+  <script type="module" defer src="./components/alpha-keyboard.js"></script>
 </HEAD>
 
 <style>
@@ -27,8 +28,8 @@
     align-content: center;
   }
 
-  alpha-keyboard [key="u"],
-  alpha-keyboard [key="j"] {
+  alpha-keyboard [mod="flat"],
+  alpha-keyboard [mod="sharp"] {
     font-size: 1.5rem;
   }
 
@@ -40,42 +41,20 @@
 <BODY>
   <synth-init>
     <alpha-keyboard>
-      <synth-key key="c" slot="c">C</synth-key>
-      <synth-key key="d" slot="d">D</synth-key>
-      <synth-key key="e" slot="e">E</synth-key>
-      <synth-key key="f" slot="f">F</synth-key>
-      <synth-key key="g" slot="g">G</synth-key>
-      <synth-key key="a" slot="a">A</synth-key>
-      <synth-key key="b" slot="b">B</synth-key>
-      <synth-key key="," slot=",">+2</synth-key>
-      <synth-key key="k" slot="k">-1</synth-key>
-      <synth-key key="i" slot="i">+1</synth-key>
-      <synth-key key="j" slot="j">♭</synth-key>
-      <synth-key key="u" slot="u">♯</synth-key>
+      <synth-note note="c" key="c" slot="c">C</synth-note>
+      <synth-note note="d" key="d" slot="d">D</synth-note>
+      <synth-note note="e" key="e" slot="e">E</synth-note>
+      <synth-note note="f" key="f" slot="f">F</synth-note>
+      <synth-note note="g" key="g" slot="g">G</synth-note>
+      <synth-note note="a" key="a" slot="a">A</synth-note>
+      <synth-note note="b" key="b" slot="b">B</synth-note>
+      <synth-modifier mod="oct+2" key="," slot=",">+2</synth-modifier>
+      <synth-modifier mod="oct-1" key="k" slot="k">-1</synth-modifier>
+      <synth-modifier mod="oct+1" key="i" slot="i">+1</synth-modifier>
+      <synth-modifier mod="flat" key="j" slot="j">♭</synth-modifier>
+      <synth-modifier mod="sharp" key="u" slot="u">♯</synth-modifier>
     </alpha-keyboard>
   </synth-init>
-
-  <!-- <code> -->
-  <!-- <b>Press anywhere on the screen to start!</b> -->
-  <!-- <p> -->
-  <!-- Keys <b>C D E F G A B</b> represent their respective notes -->
-  <!-- </p> -->
-
-  <!-- <p> -->
-  <!-- <b>Modifiers -</b><br> -->
-  <!-- <b>,</b> for +2 Octave<br> -->
-  <!-- <b>K</b> for -1 Octave<br> -->
-  <!-- <b>I</b> for +1 Octave<br> -->
-  <!-- <b>J</b> for -1 transpose (flat)<br> -->
-  <!-- <b>U</b> for +1 transpose (sharp)<br> -->
-  <!-- </p> -->
-
-  <!-- <b>Jingle Bells - </b></br> -->
-  <!-- EEE EEE EGCDE<br> -->
-  <!-- FFF FFEE EEEDDED G<br> -->
-  <!-- EEE EEE EGCDE<br> -->
-  <!-- FFF FFEE EEGGFDC<br> -->
-  <!-- </code> -->
 </BODY>
 
 </HTML>

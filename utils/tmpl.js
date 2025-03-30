@@ -1,8 +1,4 @@
-/**
-* @param {HTMLElement} wc 
-* @param {string} template 
-**/
-export default function tmpl(wc, template) {
+export default function tmpl(/**@type HTMLElement*/wc, /**@type String*/template) {
   const templateElem = document.createElement("template");
   templateElem.innerHTML = template;
 

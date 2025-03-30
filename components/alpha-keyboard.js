@@ -1,22 +1,20 @@
-import tmpl from "./tmpl.js";
+import tmpl from "../utils/tmpl.js";
 
 customElements.define("alpha-keyboard", class AlphaKeyboard extends HTMLElement {
   constructor() {
     super();
-
     this.appendChild(tmpl(this, AlphaKeyboard.template));
     document.addEventListener("keydown", this);
     document.addEventListener("keyup", this);
   }
 
-  /**
-  * @param {KeyboardEvent} ev
-  */
-  handleEvent(ev) {
+  handleEvent(/**@type KeyboardEvent*/ev) {
+    if (ev.repeat) return;
+
     switch (ev.type) {
       case "keydown":
         this.querySelector(`[key="${ev.key}"]`)
-          ?.setAttribute("pressed", "");
+          ?.setAttribute("pressed", "true");
         return;
       case "keyup":
         this.querySelector(`[key="${ev.key}"]`)
@@ -73,7 +71,7 @@ customElements.define("alpha-keyboard", class AlphaKeyboard extends HTMLElement 
         aspect-ratio: 6 / 1;
       }
 
-      alpha-keyboard [key][pressed] {
+      alpha-keyboard [key][pressed="true"] {
         background-color: #f0f0f0;
       }
 

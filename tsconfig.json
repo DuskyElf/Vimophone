@@ -18,7 +18,7 @@
     "outDir": "dist"
   },
   "include": [
-    "*.js"
+    "**/*.js"
   ],
   "verbose": true
 }

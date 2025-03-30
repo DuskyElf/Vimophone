@@ -1,75 +1,72 @@
-customElements.define("synth-init", class extends HTMLElement {
-  constructor() {
-    super();
+/** @typedef {typeof NOTE_NAMES[number]} NoteName */
+const /** @type {["a", "b", "c", "d", "e", "f", "g"]} */
+  NOTE_NAMES = ["a", "b", "c", "d", "e", "f", "g"];
 
-    this.innerHTML += /*html*/`
-      <div overlay>
-        Click here to Start
-      </div>
-      <style>
-        synth-init {
-          display: contents;
-        }
+export const A4 = 440;
+export const NOTE_RATIO = Math.pow(2, 1 / 12);
+export const ATTACK_TIME = 0.1;
+export const DECAY_TIME = 0.5;
+export const SUSTAIN_FACTOR = 0.1;
+export const RELEASE_TIME = 0.1;
 
-        synth-init>[overlay] {
-          color: #181818;
-          font-size: 3rem;
-          text-align: center;
-          align-content: center;
-          text-shadow:
-            0px 0px 10px white,
-            0px 0.5ch 10px white,
-            0px -0.5ch 10px white;
+/**@returns {x is NoteName}*/
+export const isNote = (/**@type any*/x) => NOTE_NAMES.includes(x);
 
-          text-decoration: underline;
-          text-decoration-thickness: 0.3rem;
+function getFreq(/**@type NoteName*/noteName) {
+  switch (noteName) {
+    case "a":
+      return A4 * Math.pow(NOTE_RATIO, 0);
+    case "b":
+      return A4 * Math.pow(NOTE_RATIO, 2);
+    case "c":
+      return A4 * Math.pow(NOTE_RATIO, -9);
+    case "d":
+      return A4 * Math.pow(NOTE_RATIO, -7);
+    case "e":
+      return A4 * Math.pow(NOTE_RATIO, -5);
+    case "f":
+      return A4 * Math.pow(NOTE_RATIO, -4);
+    case "g":
+      return A4 * Math.pow(NOTE_RATIO, -2);
+  }
+}
 
-          top: 50%;
-          width: 100%;
-          position: fixed;
-          padding: 7rem;
-          transform: translateY(-50%);
-          box-shadow: 0 0 50px 10px #f0f0f0;
+export class Note {
+  constructor(/**@type AudioContext*/audioCtx, /**@type NoteName*/noteName, /**@type number*/timeStamp) {
+    /**@private*/this._audioCtx = audioCtx;
+    /**@private*/this._freq = getFreq(noteName);
 
-          z-index: 1000;
-          backdrop-filter: blur(10px);
-          background: rgba(255, 255, 255, 0.0);
+    /**@private*/this._oscillator = audioCtx.createOscillator();
 
-          transition: 0.5s padding;
-          animation: blink 2s linear infinite;
-        }
+    const wave = audioCtx.createPeriodicWave([1, 0.9, 0.5, 0.5, 0.5, 0.5], [1, 1, 1, 1, 1, 1]);
+    this._oscillator.setPeriodicWave(wave);
 
-        synth-init>[overlay]:hover {
-          animation: 0;
-          padding-top: 50%;
-          padding-bottom: 50%;
-        }
+    this._oscillator.start(timeStamp);
+    this._oscillator.frequency.setValueAtTime(this._freq, timeStamp);
 
-        @keyframes blink {
-          0% { color: #181818; }
-          50% { color: transparent; }
-          100% { color: #181818; }
-        }
-      </style>
-    `;
-
-    this.overlay = /**@type {HTMLDivElement}*/(this.querySelector("[overlay]"));
-    this.overlay.addEventListener("click", this);
+    /**@private*/this._gainNode = audioCtx.createGain();
+    this._gainNode.gain.setValueAtTime(0, timeStamp);
+    this._oscillator.connect(this._gainNode);
+    this._gainNode.connect(this._audioCtx.destination);
   }
 
-  /**
-  * @param {KeyboardEvent} ev
-  */
-  handleEvent(ev) {
-    switch (ev.type) {
-      case "click":
-        this.overlay.style.display = "none";
-    }
-  }
-})
+  /** @typedef {{ octave: number, transpose: number }} Modifiers */
+  /** Hitthe Note so that it makes some sound */
+  hit(/**@type Modifiers*/modifiers) {
+    const factor = 1
+      * Math.pow(2, modifiers.octave)
+      * Math.pow(NOTE_RATIO, modifiers.transpose);
 
-customElements.define("synth-key", class extends HTMLElement {
-  constructor() {
-    super();
+    this._oscillator.frequency.setValueAtTime(
+      this._freq * factor, this._audioCtx.currentTime);
+
+    this._gainNode.gain.setTargetAtTime(0.8, this._audioCtx.currentTime, ATTACK_TIME);
+    this._gainNode.gain.setTargetAtTime(0.8 * SUSTAIN_FACTOR, this._audioCtx.currentTime + ATTACK_TIME, DECAY_TIME);
   }
-})
+
+  /** The hitting action is completed, stop playing the sound */
+  unhit() {
+    this._gainNode.gain.cancelScheduledValues(this._audioCtx.currentTime);
+    this._gainNode.gain.setTargetAtTime(0, this._audioCtx.currentTime, RELEASE_TIME)
+  }
+}
