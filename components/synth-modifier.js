@@ -22,8 +22,8 @@ export class SynthModifier extends HTMLElement {
 
     if (isPressed)
       switch (mod) {
-        case "oct+2":
-          modifiers.octave = 2;
+        case "oct-2":
+          modifiers.octave = -2;
           break;
         case "oct-1":
           modifiers.octave = -1;
@@ -42,7 +42,7 @@ export class SynthModifier extends HTMLElement {
       }
     else
       switch (mod) {
-        case "oct+2":
+        case "oct-2":
           modifiers.octave = 0;
           break;
         case "oct-1":
