@@ -13,11 +13,11 @@ customElements.define("alpha-keyboard", class AlphaKeyboard extends HTMLElement 
 
     switch (ev.type) {
       case "keydown":
-        this.querySelector(`[key="${ev.key}"]`)
+        this.querySelector(`[key="${ev.code}"]`)
           ?.setAttribute("pressed", "true");
         return;
       case "keyup":
-        this.querySelector(`[key="${ev.key}"]`)
+        this.querySelector(`[key="${ev.code}"]`)
           ?.removeAttribute("pressed");
         return;
     }
