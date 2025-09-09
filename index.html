@@ -1,60 +1,21 @@
-<!DOCTYPE html>
-<HTML>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Asimovian&display=swap"
+      rel="stylesheet"
+    />
+    <title>Vimophone</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
 
-<HEAD>
-  <title>Vimophone</title>
-  <meta charset="utf-8">
-  <script type="module" defer src="./components/synth-init.js"></script>
-  <script type="module" defer src="./components/synth-note.js"></script>
-  <script type="module" defer src="./components/synth-modifier.js"></script>
-  <script type="module" defer src="./components/alpha-keyboard.js"></script>
-</HEAD>
-
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    display: flex;
-    padding-top: 30vh;
-    justify-content: center;
-  }
-
-  alpha-keyboard [key] {
-    text-align: center;
-    align-content: center;
-  }
-
-  alpha-keyboard [mod="flat"],
-  alpha-keyboard [mod="sharp"] {
-    font-size: 1.5rem;
-  }
-
-  alpha-keyboard [key]:hover {
-    background-color: #f0f0f0;
-  }
-</style>
-
-<BODY>
-  <synth-init>
-    <alpha-keyboard>
-      <synth-note note="c" key="KeyC" slot="c">C</synth-note>
-      <synth-note note="d" key="KeyD" slot="d">D</synth-note>
-      <synth-note note="e" key="KeyE" slot="e">E</synth-note>
-      <synth-note note="f" key="KeyF" slot="f">F</synth-note>
-      <synth-note note="g" key="KeyG" slot="g">G</synth-note>
-      <synth-note note="a" key="KeyA" slot="a">A</synth-note>
-      <synth-note note="b" key="KeyB" slot="b">B</synth-note>
-      <synth-modifier mod="oct-2" key="Comma" slot=",">-2</synth-modifier>
-      <synth-modifier mod="oct-1" key="KeyK" slot="k">-1</synth-modifier>
-      <synth-modifier mod="oct+1" key="KeyI" slot="i">+1</synth-modifier>
-      <synth-modifier mod="flat" key="KeyJ" slot="j">♭</synth-modifier>
-      <synth-modifier mod="sharp" key="KeyU" slot="u">♯</synth-modifier>
-    </alpha-keyboard>
-  </synth-init>
-</BODY>
-
-</HTML>
+    <script src="/src/index.tsx" type="module"></script>
+  </body>
+</html>
