@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
+@theme {
+  --animate-wave: wave 560ms ease-in-out;
+
+  @keyframes wave {
+    0%,
+    100% {
+      transform: rotate(0);
+    }
+    20%,
+    60% {
+      transform: rotate(-25deg);
+    }
+    40%,
+    80% {
+      transform: rotate(10deg);
+    }
+  }
+}
+
 body {
-    @apply bg-neutral-950 text-white;
+  @apply bg-neutral-950 text-white;
 }

@@ -9,6 +9,7 @@ import {
 import { createStore } from "solid-js/store";
 import Keyboard, { Key, KeyStates } from "./components/Keyboard";
 import { notes, playNote, ReleaseHandle } from "./synth";
+import GithubRibbon from "./components/GithubRibbon";
 
 let audioContext: AudioContext;
 const App: Component = () => {
@@ -100,9 +101,12 @@ const App: Component = () => {
   });
 
   return (
-    <div class="flex h-screen items-center justify-center">
-      <Keyboard keyStates={keyStates} setKeyStates={setKeyStates}></Keyboard>
-    </div>
+    <>
+      <GithubRibbon repo="DuskyElf/vimophone" />
+      <div class="flex h-screen items-center justify-center">
+        <Keyboard keyStates={keyStates} setKeyStates={setKeyStates}></Keyboard>
+      </div>
+    </>
   );
 };
 
