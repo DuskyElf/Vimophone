@@ -64,7 +64,7 @@ export default function Keyboard(props: KeyboardProps) {
   });
 
   return (
-    <div ref={container} class="font-mono">
+    <div ref={container} class="animate-fade-down font-mono">
       <For each={layout}>
         {(row) => (
           <div class="mb-1 flex justify-center">
@@ -75,7 +75,7 @@ export default function Keyboard(props: KeyboardProps) {
                     keys.add(el);
                   }}
                   class={
-                    "m-0.5 cursor-pointer rounded-xl bg-neutral-800 px-3 py-2 text-center transition select-none active:bg-violet-100 active:text-neutral-800"
+                    "m-0.5 cursor-pointer rounded-2xl bg-neutral-800 px-4 py-3 text-center text-xl transition select-none active:bg-violet-100 active:text-neutral-800"
                   }
                   classList={{
                     "opacity-20": !props.keyStates?.[key.toUpperCase() as Key],
@@ -99,7 +99,7 @@ export default function Keyboard(props: KeyboardProps) {
         <button
           ref={spaceKey}
           class={
-            "m-0.5 cursor-pointer rounded-xl bg-neutral-800 px-25 py-2 text-center transition select-none active:bg-violet-100 active:text-neutral-800"
+            "m-0.5 cursor-pointer rounded-2xl bg-neutral-800 px-30 py-4 text-center transition select-none active:bg-violet-100 active:text-neutral-800"
           }
           classList={{
             "opacity-20": !props.keyStates?.[" "],

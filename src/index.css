@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --animate-wave: wave 560ms ease-in-out;
+  --animate-fade-down: fade-down 500ms ease-in-out;
 
   @keyframes wave {
     0%,
@@ -15,6 +15,26 @@
     40%,
     80% {
       transform: rotate(10deg);
+    }
+  }
+
+  @keyframes fade-down {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
     }
   }
 }
