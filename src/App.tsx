@@ -1,17 +1,20 @@
-import {
-  createEffect,
-  createSignal,
-  onCleanup,
-  onMount,
-  on,
-  type Component,
-} from "solid-js";
+import { createEffect, onCleanup, onMount, on, type Component } from "solid-js";
 import { createStore } from "solid-js/store";
 import Keyboard, { Key, KeyStates } from "./components/Keyboard";
 import { notes, playNote, ReleaseHandle } from "./synth";
 import GithubRibbon from "./components/GithubRibbon";
 
 let audioContext: AudioContext;
+const initAudioContext = () => {
+  if (!audioContext) {
+    audioContext = new AudioContext();
+    window.removeEventListener("mousedown", initAudioContext);
+    window.removeEventListener("keydown", initAudioContext);
+  }
+};
+window.addEventListener("mousedown", initAudioContext);
+window.addEventListener("keydown", initAudioContext);
+
 const App: Component = () => {
   const activeKeys: Key[] = [
     "C",
@@ -35,16 +38,6 @@ const App: Component = () => {
   const [keyStates, setKeyStates] = createStore<KeyStates>(
     Object.fromEntries(activeKeys.map((k) => [k, "released"])),
   );
-
-  const initAudioContext = (e: Event) => {
-    if (!audioContext) {
-      audioContext = new AudioContext();
-      window.removeEventListener("mousedown", initAudioContext);
-      window.removeEventListener("keydown", initAudioContext);
-    }
-  };
-  window.addEventListener("mousedown", initAudioContext);
-  window.addEventListener("keydown", initAudioContext);
 
   onMount(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -104,7 +97,7 @@ const App: Component = () => {
     <>
       <GithubRibbon repo="DuskyElf/vimophone" />
       <div class="flex h-screen items-center justify-center">
-        <Keyboard keyStates={keyStates} setKeyStates={setKeyStates}></Keyboard>
+        <Keyboard keyStates={keyStates} setKeyStates={setKeyStates} />
       </div>
     </>
   );

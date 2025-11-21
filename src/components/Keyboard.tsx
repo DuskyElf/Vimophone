@@ -1,5 +1,5 @@
 import { For, onMount, onCleanup } from "solid-js";
-import { createStore, SetStoreFunction } from "solid-js/store";
+import { SetStoreFunction } from "solid-js/store";
 
 export type Key = (typeof layout)[number][number] | " ";
 export type KeyStates = Partial<Record<Key, "pressed" | "released">>;
@@ -43,7 +43,7 @@ export default function Keyboard(props: KeyboardProps) {
       beingClicked.add(target);
       props.setKeyStates?.(key, "pressed");
     };
-    const mouseUpHandler = (e: MouseEvent) => {
+    const mouseUpHandler = (_: MouseEvent) => {
       beingClicked.forEach((button) => {
         let key;
         if (button === spaceKey) key = " " as Key;
