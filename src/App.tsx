@@ -26,9 +26,9 @@ const App: Component = () => {
     "B",
     "U",
     "J",
-    "I",
-    "K",
-    ",",
+    "O",
+    "L",
+    ".",
     " ",
   ];
   const isActiveKey = (key: string): key is Key => {
@@ -72,9 +72,9 @@ const App: Component = () => {
 
   createEffect(() => {
     let octave = 4;
-    if (keyStates["K"] === "pressed") octave -= 1;
-    if (keyStates["I"] === "pressed") octave += 1;
-    if (keyStates[","] === "pressed") octave -= 2;
+    if (keyStates["L"] === "pressed") octave -= 1;
+    if (keyStates["O"] === "pressed") octave += 1;
+    if (keyStates["."] === "pressed") octave -= 2;
     setModifiers("octave", octave);
   });
 
